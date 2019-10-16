@@ -1,6 +1,7 @@
 module.exports = {
   entry: './src/index.jsx', // エントリポイントのjsxファイル
   output: {
+    path: `${__dirname}`+'/',
     filename: 'bundle.js' // 出力するファイル
   },
   module: {
