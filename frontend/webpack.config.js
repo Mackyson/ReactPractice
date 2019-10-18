@@ -1,5 +1,5 @@
 module.exports = {
-	entry: "./src/index.jsx", // エントリポイントのjsxファイル
+	entry: "./src/index.tsx", // エントリポイントのjsxファイル
 	output: {
 		path: `${__dirname}` + "/public",
 		filename: "bundle.js", // 出力するファイル
