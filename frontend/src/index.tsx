@@ -1,11 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
-import SignInForm from "./components/SignInForm.tsx"
+import Header from "./components/Header.tsx"
+import TaskAddingForm from "./components/TaskAddingForm.tsx"
 
 ReactDOM.render(
 	<MuiThemeProvider>
-		<SignInForm />
+		<Header />
+		<TaskAddingForm />
 	</MuiThemeProvider>,
 	document.querySelector("#root")
 )
