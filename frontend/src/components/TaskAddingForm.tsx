@@ -1,6 +1,5 @@
 import React from "react"
-import TextField from "material-ui/TextField"
-import RaisedButton from "material-ui/RaisedButton"
+import { TextField, Button } from "@material-ui/core/"
 
 export default class TaskAddingForm extends React.Component {
 	constructor(props) {
@@ -20,14 +19,10 @@ export default class TaskAddingForm extends React.Component {
 	render() {
 		return (
 			<div>
-				<TextField
-					label="Your task"
-					value={this.state.task}
-					onChange={this.inputTask}
-					placeholder="e.g. 進捗を出す"
-					margin="normal"
-				/>
-				<RaisedButton label="タスク追加" onClick={this.submit.bind(this)} />
+				<TextField value={this.state.task} onChange={this.inputTask} placeholder="e.g. 進捗を出す" margin="none" />
+				<Button variant="contained" onClick={this.submit.bind(this)}>
+					タスク追加
+				</Button>
 			</div>
 		)
 	}
