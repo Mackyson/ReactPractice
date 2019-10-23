@@ -3,14 +3,13 @@ package main
 import (
 	"net/http"
 	"os"
+	"strconv"
 
+	"app/controllers"
+	"app/models"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
-
-//下の構造体は別ファイルに
-type Task struct {
-	Content string `json:"content"`
-}
 
 func main() {
 	port := os.Getenv("PORT")
@@ -20,9 +19,12 @@ func main() {
 	router := gin.Default()
 	router.Use(gin.Logger())
 
-	router.POST("/signup", signup)
+	// APIのハンドルを定義
+	router.POST("/signup", signUp)
+	// router.POST("/signin", signIn)
 	router.GET("/:uid/", getTasks)
 	router.GET("/:uid/:taskid", getTask)
+
 	router.Run(":" + port)
 }
 
@@ -35,17 +37,20 @@ func setCORS(c *gin.Context) {
 	c.Header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
 
-func signup(c *gin.Context) {
+func signUp(c *gin.Context) {
 	c.String(http.StatusOK, "<h1>登録完了！(大嘘)</h1>")
 }
 func getTasks(c *gin.Context) {
 	setCORS(c)
 
 	uid := c.Param("uid")
-	var tasks []Task
-	tasks = make([]Task, 0)
-	tasks = append(tasks, Task{uid + "'s task1"}, Task{uid + "'s task2"})
-	c.JSON(http.StatusOK, tasks)
+	uuid, _ := strconv.Atoi(uid)
+	tasks := controllers.GetOwnTasks(uuid)
+	fmt.Printf("%+v", tasks)
+	// var tmptasks []models.Task
+	tmptasks := make([]models.Task, 0)
+	tmptasks = append(tmptasks, models.Task{Content: uid + "'s task1"}, models.Task{Content: uid + "'s task2"})
+	c.JSON(http.StatusOK, tmptasks)
 }
 func getTask(c *gin.Context) {
 	setCORS(c)

@@ -12,10 +12,11 @@ services:
         environment:
           - PORT=8080
           - GO111MODULE=on
-          - DB_HOST=db
-          - DB_NAME=devdb
-          - DB_USER=devuser
-          - DB_PASSWORD=devpasswd
+          - DB_HOST=mysql
+          - DB_PORT=3306
+          - DB_NAME=todo_app
+          - DB_USER=root
+          - DB_PASSWORD=root
         volumes:
           - ./backend:/go/src/app/
 
