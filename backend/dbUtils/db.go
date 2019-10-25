@@ -1,8 +1,7 @@
-package db
+package dbUtils
 
 import (
 	// "github.com/ReactPractice/backend/models"
-	"app/models"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -10,12 +9,7 @@ import (
 	"os"
 )
 
-var (
-	db  *gorm.DB
-	err error
-)
-
-func Init() {
+func GetDB() *gorm.DB {
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
@@ -24,7 +18,7 @@ func Init() {
 		password,
 		dbname,
 	)
-	db, err = gorm.Open("mysql", config)
+	db, err := gorm.Open("mysql", config) //OpenしまくってもどうせプールされるからOK
 	if err != nil {
 		log.Printf("failed to connect DB")
 		log.Printf(config)
@@ -32,25 +26,9 @@ func Init() {
 	}
 	log.Printf("DB connection is opened")
 
-	if !db.HasTable(&models.User{}) {
-		err := db.CreateTable(&models.User{})
-		if err != nil {
-			log.Printf("User table exists")
-		}
-	}
-	if !db.HasTable(&models.Task{}) {
-		err := db.CreateTable(&models.Task{})
-		if err != nil {
-			log.Printf("Task table exists")
-		}
-	}
-	db.LogMode(true)
-	db.AutoMigrate(&models.User{}, &models.Task{})
-}
-
-func GetDB() *gorm.DB {
 	return db
 }
-func CloseDB() {
+
+func CloseDB(db *gorm.DB) {
 	db.Close()
 }
