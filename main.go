@@ -5,9 +5,12 @@ import (
 	"os"
 	"strconv"
 
-	"app/controllers"
-	"app/models"
+	"github.com/Mackyson/ReactPractice/backend/controllers"
+	// "app/dbUtils"
 	"fmt"
+	"github.com/Mackyson/ReactPractice/backend/models"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,34 +21,31 @@ func main() {
 	}
 	router := gin.Default()
 	router.Use(gin.Logger())
+	router.Use(cors.Default())
+	router.Use(static.Serve("/", static.LocalFile("/frontend/public", true)))
+	router.NoRoute(func(c *gin.Context) { c.File("/frontend/public/index.html") })
 
+	//dbUtils.Migrate()
 	// APIのハンドルを定義
 	router.POST("/signup", signUp)
 	// router.POST("/signin", signIn)
-	router.GET("/:uid/", getTasks)
-	router.GET("/:uid/:taskid", getTask)
+	router.GET("todo/:uid/", getTasks)
+	router.POST("todo/:uid/", controllers.AddNewTask)
+	router.GET("todo/:uid/:id", getTask)
 
 	router.Run(":" + port)
 }
 
 //TODO 下のハンドラは別ファイルに
 
-func setCORS(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	c.Header("Access-Control-Max-Age", "86400")
-	c.Header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-}
-
 func signUp(c *gin.Context) {
 	c.String(http.StatusOK, "<h1>登録完了！(大嘘)</h1>")
 }
 func getTasks(c *gin.Context) {
-	setCORS(c)
 
 	uid := c.Param("uid")
-	uuid, _ := strconv.Atoi(uid)
-	tasks := controllers.GetOwnTasks(uuid)
+	uidInt, _ := strconv.Atoi(uid)
+	tasks := controllers.GetOwnTasks(uidInt)
 	fmt.Printf("%+v", tasks)
 	// var tmptasks []models.Task
 	tmptasks := make([]models.Task, 0)
@@ -53,8 +53,6 @@ func getTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, tmptasks)
 }
 func getTask(c *gin.Context) {
-	setCORS(c)
-
 	uid := c.Param("uid")
 	taskid := c.Param("taskid")
 	c.JSON(http.StatusOK, gin.H{"task": uid + "のタスク" + taskid})
