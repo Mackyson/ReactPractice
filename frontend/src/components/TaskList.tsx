@@ -13,7 +13,7 @@ export default class TaskList extends React.Component {
 	fetch = () => {
 		//ここにタスクのGET
 		axios
-			.get("http://localhost:8080/1/", {})
+			.get("http://localhost:8080/todo/256/", {})
 			.then(results => {
 				console.log(results.data)
 				this.setState({ tasks: results.data })

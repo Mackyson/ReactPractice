@@ -2,13 +2,12 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"time"
 )
 
 type Task struct {
 	gorm.Model
-	TaskOwnerId uint
+	TaskOwnerId uint64
 	Content     string
-	Deadline    time.Time
+	Deadline    string
 	Status      int
 }
