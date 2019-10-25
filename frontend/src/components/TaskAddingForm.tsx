@@ -24,7 +24,7 @@ export default class TaskAddingForm extends React.Component {
 		console.log(content, " をしようね！")
 		//ここにタスクのPOST
 		axios
-			.post("localhost:8080/todo/" + this.state.uid, {
+			.post("http://localhost:8080/todo/" + this.state.uid, {
 				content: this.state.content,
 				deadline: this.state.date,
 			})

@@ -22,8 +22,8 @@ func main() {
 	router := gin.Default()
 	router.Use(gin.Logger())
 	router.Use(cors.Default())
-	router.Use(static.Serve("/", static.LocalFile("/frontend/public", true)))
-	router.NoRoute(func(c *gin.Context) { c.File("/frontend/public/index.html") })
+	router.Use(static.Serve("/", static.LocalFile("./frontend/public/", true)))
+	router.NoRoute(func(c *gin.Context) { c.File("./frontend/public/index.html") })
 
 	//dbUtils.Migrate()
 	// APIのハンドルを定義
