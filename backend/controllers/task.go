@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"app/dbUtils"
-	"app/models"
+	"github.com/Mackyson/ReactPractice/backend/dbUtils"
+	"github.com/Mackyson/ReactPractice/backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

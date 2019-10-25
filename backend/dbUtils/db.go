@@ -1,7 +1,6 @@
 package dbUtils
 
 import (
-	// "github.com/ReactPractice/backend/models"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

@@ -1,8 +1,7 @@
 package dbUtils
 
 import (
-	// "github.com/ReactPractice/backend/models"
-	"app/models"
+	"github.com/Mackyson/ReactPractice/backend/models"
 	// "github.com/jinzhu/gorm"
 	// _ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
