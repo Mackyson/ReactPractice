@@ -34,7 +34,12 @@ export default class TaskAddingForm extends React.Component {
 	render() {
 		return (
 			<div>
-				<TextField value={this.state.task} onChange={this.inputContent} placeholder="e.g. 進捗を出す" margin="none" />
+				<TextField
+					value={this.state.content}
+					onChange={this.inputContent}
+					placeholder="e.g. 進捗を出す"
+					margin="none"
+				/>
 				<TextField
 					id="date"
 					type="date"
