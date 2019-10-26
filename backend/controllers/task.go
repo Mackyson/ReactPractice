@@ -8,12 +8,14 @@ import (
 	"strconv"
 )
 
-func GetOwnTasks(id int) models.Task {
+func GetOwnTasks(c *gin.Context) {
+	uidStr := c.Param("uid")
+	uid, _ := strconv.ParseUint(uidStr, 10, 32) //32bit unsigned int(decimal)
 	db := dbUtils.GetDB()
 	defer dbUtils.CloseDB(db)
-	table := models.Task{}
-	db.First(&table, id)
-	return table
+	tasks := make([]models.Task, 0)
+	db.Find(&tasks, models.Task{TaskOwnerId: uid})
+	c.JSON(http.StatusOK, tasks)
 }
 func AddNewTask(c *gin.Context) {
 	uidStr := c.Param("uid")

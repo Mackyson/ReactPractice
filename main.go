@@ -3,11 +3,9 @@ package main
 import (
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/Mackyson/ReactPractice/backend/controllers"
 	// "app/dbUtils"
-	"fmt"
 	"github.com/Mackyson/ReactPractice/backend/models"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
@@ -27,9 +25,10 @@ func main() {
 
 	//dbUtils.Migrate()
 	// APIのハンドルを定義
+	//TODO API handler Grouping
 	router.POST("/signup", signUp)
 	// router.POST("/signin", signIn)
-	router.GET("todo/:uid/", getTasks)
+	router.GET("todo/:uid/", controllers.GetOwnTasks)
 	router.POST("todo/:uid/", controllers.AddNewTask)
 	router.GET("todo/:uid/:id", getTask)
 
@@ -40,17 +39,6 @@ func main() {
 
 func signUp(c *gin.Context) {
 	c.String(http.StatusOK, "<h1>登録完了！(大嘘)</h1>")
-}
-func getTasks(c *gin.Context) {
-
-	uid := c.Param("uid")
-	uidInt, _ := strconv.Atoi(uid)
-	tasks := controllers.GetOwnTasks(uidInt)
-	fmt.Printf("%+v", tasks)
-	// var tmptasks []models.Task
-	tmptasks := make([]models.Task, 0)
-	tmptasks = append(tmptasks, models.Task{Content: uid + "'s task1"}, models.Task{Content: uid + "'s task2"})
-	c.JSON(http.StatusOK, tmptasks)
 }
 func getTask(c *gin.Context) {
 	uid := c.Param("uid")

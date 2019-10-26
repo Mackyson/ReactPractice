@@ -12,7 +12,7 @@ func GetDB() *gorm.DB {
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
-	config := fmt.Sprintf("%s:%s@(mysql:3306)/%s",
+	config := fmt.Sprintf("%s:%s@(mysql:3306)/%s?parseTime=true",
 		user,
 		password,
 		dbname,

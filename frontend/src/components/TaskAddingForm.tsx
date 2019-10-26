@@ -19,17 +19,17 @@ export default class TaskAddingForm extends React.Component {
 		this.setState({ date: e.target.value })
 	}
 	submit = () => {
-		let content = this.state.content
-		this.setState({ content: "" })
-		console.log(content, " をしようね！")
-		//ここにタスクのPOST
 		axios
-			.post("http://localhost:8080/todo/" + this.state.uid, {
+			.post("http://localhost:8080/todo/" + this.state.uid + "/", {
 				content: this.state.content,
 				deadline: this.state.date,
 			})
-			.then()
-			.catch(alert("送信に失敗しました"))
+			.then(() => {
+				this.setState({ content: "" })
+			})
+			.catch(error => {
+				alert(error)
+			})
 	}
 	render() {
 		return (

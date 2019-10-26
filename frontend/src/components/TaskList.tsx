@@ -11,11 +11,9 @@ export default class TaskList extends React.Component {
 		this.state = { tasks: {}, table: <div>読み込み中</div> }
 	}
 	fetch = () => {
-		//ここにタスクのGET
 		axios
 			.get("http://localhost:8080/todo/256/", {})
 			.then(results => {
-				console.log(results.data)
 				this.setState({ tasks: results.data })
 				let cnt = 0
 				this.setState({

@@ -6,8 +6,8 @@ import (
 
 type Task struct {
 	gorm.Model
-	TaskOwnerId uint64
-	Content     string
-	Deadline    string
-	Status      int
+	TaskOwnerId uint64 `json:"taskOwnerId"`
+	Content     string `json:"content"`
+	Deadline    string `json:"deadline"`
+	Status      int    `json:"status"`
 }
