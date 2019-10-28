@@ -4,11 +4,19 @@ import (
 	"github.com/Mackyson/ReactPractice/backend/dbUtils"
 	"github.com/Mackyson/ReactPractice/backend/models"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"log"
 	"net/http"
 )
 
-func IssueSessionID(uid uint64) {} //SessionIDの発行と登録
+func IssueSessionID(db *gorm.DB, name string) string { //SessionIDの発行と登録
+	sessionID := "test"
+	userBefore := models.User{Name: name}
+	db.First(&userBefore)
+	log.Printf("%+v", userBefore)
+	db.Model(&userBefore).Update("session_id", sessionID)
+	return sessionID
+}
 
 func HashPassword(raw string) string { //パスワードのハッシュ化
 	return raw
@@ -28,7 +36,7 @@ func AddNewUser(c *gin.Context) {
 	result := db.Create(&user)
 	log.Printf("%+v", result)
 	if result.Error == nil {
-		c.JSON(http.StatusOK, gin.H{"sessionID": "test"})
+		c.JSON(http.StatusOK, gin.H{"sessionID": IssueSessionID(db, name)})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"Error": result.Error})
 	}
