@@ -1,4 +1,5 @@
 module.exports = {
+	mode: "development",
 	entry: "./src/index.tsx", // エントリポイントのjsxファイル
 	output: {
 		path: `${__dirname}` + "/public",

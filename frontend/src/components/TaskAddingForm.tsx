@@ -1,8 +1,12 @@
 import React from "react"
 import axios from "axios"
+import PropTypes from "prop-types"
 import { TextField, Button } from "@material-ui/core/"
 
 export default class TaskAddingForm extends React.Component {
+	static propTypes = {
+		fetch: PropTypes.func.isRequired,
+	}
 	constructor(props) {
 		super(props)
 		let nowDate = new Date().toISOString().split("T")[0] //yyyy-mm-dd
@@ -26,6 +30,7 @@ export default class TaskAddingForm extends React.Component {
 			})
 			.then(() => {
 				this.setState({ content: "" })
+				this.props.fetch()
 			})
 			.catch(error => {
 				alert(error)
