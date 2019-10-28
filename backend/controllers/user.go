@@ -30,7 +30,7 @@ func UpdateSessionID(c *gin.Context) {
 	defer dbUtils.CloseDB(db)
 	hashedPassword := HashPassword(rawPassword)
 	user := models.User{}
-	result := db.Where("name = ?", name).First(&user)
+	result := db.Where("name = ? AND name !=\"\"", name).First(&user)
 	//存在するか->パスは一致しているか
 	if result.Error == nil {
 		if user.Password != hashedPassword {
