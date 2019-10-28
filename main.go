@@ -28,7 +28,7 @@ func main() {
 	//TODO API handler Grouping
 	//TODO ハンドラの設定を別ファイルに切り出す
 	router.POST("/signup", controllers.AddNewUser)
-	// router.POST("/signin", signIn)
+	router.POST("/signin", controllers.UpdateSessionID)
 	router.GET("todo/:uid/", controllers.GetOwnTasks)
 	router.POST("todo/:uid/", controllers.AddNewTask)
 	router.GET("todo/:uid/:id", getTask)

@@ -1,21 +1,40 @@
 import React from "react"
-import RaisedButton from "material-ui/RaisedButton"
+import axios from "axios"
+import qs from "qs"
+import { TextField, Button } from "@material-ui/core/"
 
-export default class SignInForm extends React.Component {
+export default class SignUpForm extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			cnt: 0,
+			userName: "",
+			password: "",
 		}
 	}
-	handleClick = () => {
-		this.setState({ cnt: this.state.cnt + 1 })
+	inputUsername = e => {
+		this.setState({ userName: e.target.value })
+	}
+	inputPassword = e => {
+		this.setState({ password: e.target.value })
+	}
+	submit = () => {
+		axios
+			.post("http://localhost:8080/signin", qs.stringify({ name: this.state.userName, password: this.state.password }))
+			.then(res => {
+				console.log(res)
+			})
+			.catch(err => {
+				alert(err)
+			})
 	}
 	render() {
 		return (
 			<div>
-				ログイン画面
-				<RaisedButton label={this.state.cnt} onClick={this.handleClick} />
+				<TextField label="Your unique uame" value={this.state.userName} onChange={this.inputUsername} />
+				<TextField label="Your password" type="password" value={this.state.password} onChange={this.inputPassword} />
+				<Button variant="contained" onClick={this.submit.bind(this)}>
+					ログイン
+				</Button>
 			</div>
 		)
 	}

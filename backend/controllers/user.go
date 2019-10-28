@@ -9,12 +9,9 @@ import (
 	"net/http"
 )
 
-func IssueSessionID(db *gorm.DB, name string) string { //SessionIDの発行と登録
+func IssueSessionID(db *gorm.DB, user models.User) string { //SessionIDの発行と登録
 	sessionID := "test"
-	userBefore := models.User{Name: name}
-	db.First(&userBefore)
-	log.Printf("%+v", userBefore)
-	db.Model(&userBefore).Update("session_id", sessionID)
+	db.Model(&user).Update("session_id", sessionID)
 	return sessionID
 }
 
@@ -22,6 +19,26 @@ func HashPassword(raw string) string { //パスワードのハッシュ化
 	return raw
 }
 
+func UpdateSessionID(c *gin.Context) {
+	err := c.Request.ParseForm()
+	if err != nil {
+		panic(err) //TODO まともなハンドリングをする
+	}
+	name := c.PostForm("name")
+	rawPassword := c.PostForm("password")
+	db := dbUtils.GetDB()
+	defer dbUtils.CloseDB(db)
+	hashedPassword := HashPassword(rawPassword)
+	user := models.User{Name: name}
+	result := db.First(&user)
+	if user.Password != hashedPassword {
+		c.JSON(http.StatusBadRequest, gin.H{"Error": "Wrong password"})
+	} else if result.Error == nil {
+		c.JSON(http.StatusOK, gin.H{"sessionID": IssueSessionID(db, user)})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"Error": result.Error})
+	}
+}
 func AddNewUser(c *gin.Context) {
 
 	err := c.Request.ParseForm()
@@ -36,7 +53,7 @@ func AddNewUser(c *gin.Context) {
 	result := db.Create(&user)
 	log.Printf("%+v", result)
 	if result.Error == nil {
-		c.JSON(http.StatusOK, gin.H{"sessionID": IssueSessionID(db, name)})
+		c.JSON(http.StatusOK, gin.H{"sessionID": IssueSessionID(db, user)})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"Error": result.Error})
 	}
