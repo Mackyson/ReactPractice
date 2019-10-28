@@ -24,13 +24,13 @@ export default class SignUpForm extends React.Component {
 				console.log(res)
 			})
 			.catch(err => {
-				alert(err)
+				alert(err.response.data.error)
 			})
 	}
 	render() {
 		return (
 			<div>
-				<TextField label="Your unique uame" value={this.state.userName} onChange={this.inputUsername} />
+				<TextField label="Your unique name" value={this.state.userName} onChange={this.inputUsername} />
 				<TextField label="Your password" type="password" value={this.state.password} onChange={this.inputPassword} />
 				<Button variant="contained" onClick={this.submit.bind(this)}>
 					新規登録

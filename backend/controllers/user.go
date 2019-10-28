@@ -5,7 +5,7 @@ import (
 	"github.com/Mackyson/ReactPractice/backend/models"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"log"
+	// "log"
 	"net/http"
 )
 
@@ -29,14 +29,17 @@ func UpdateSessionID(c *gin.Context) {
 	db := dbUtils.GetDB()
 	defer dbUtils.CloseDB(db)
 	hashedPassword := HashPassword(rawPassword)
-	user := models.User{Name: name}
-	result := db.First(&user)
-	if user.Password != hashedPassword {
-		c.JSON(http.StatusBadRequest, gin.H{"Error": "Wrong password"})
-	} else if result.Error == nil {
-		c.JSON(http.StatusOK, gin.H{"sessionID": IssueSessionID(db, user)})
+	user := models.User{}
+	result := db.Where("name = ?", name).First(&user)
+	//存在するか->パスは一致しているか
+	if result.Error == nil {
+		if user.Password != hashedPassword {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Wrong password"})
+		} else {
+			c.JSON(http.StatusOK, gin.H{"sessionID": IssueSessionID(db, user)})
+		}
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"Error": result.Error})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Not exists such user"})
 	}
 }
 func AddNewUser(c *gin.Context) {
@@ -51,10 +54,9 @@ func AddNewUser(c *gin.Context) {
 	defer dbUtils.CloseDB(db)
 	user := models.User{Name: name, Password: HashPassword(rawPassword)}
 	result := db.Create(&user)
-	log.Printf("%+v", result)
 	if result.Error == nil {
 		c.JSON(http.StatusOK, gin.H{"sessionID": IssueSessionID(db, user)})
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"Error": result.Error})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The user with the same name already exists"})
 	}
 }
