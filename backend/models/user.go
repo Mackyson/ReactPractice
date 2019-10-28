@@ -10,7 +10,7 @@ type User struct {
 	// CreatedAt time.Time `json:"createdAt" gorm:"index"`
 	// UpdatedAt time.Time `json:"updatedAt" gorm:"index"`
 	// DeletedAt time.Time `json:"deletedAt" gorm:"index"`
-	Name     string `json:"name" gorm:"index"`
-	Password string `json:"password" gorm:"index"`
-	Token    string `json:"token" gorm:"index"`
+	Name      string `json:"name" gorm:"unique;not null"`
+	Password  string `json:"password" gorm:"not null"`
+	SessionID string `json:"session_id" gorm:"index"`
 }

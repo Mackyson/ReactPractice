@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+//TODO sessionIDの確認
 func GetOwnTasks(c *gin.Context) {
 	uidStr := c.Param("uid")
 	uid, _ := strconv.ParseUint(uidStr, 10, 32) //32bit unsigned int(decimal)

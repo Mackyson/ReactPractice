@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/Mackyson/ReactPractice/backend/controllers"
-	// "app/dbUtils"
-	"github.com/Mackyson/ReactPractice/backend/models"
+	"github.com/Mackyson/ReactPractice/backend/dbUtils"
+	// "github.com/Mackyson/ReactPractice/backend/models"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -23,10 +23,11 @@ func main() {
 	router.Use(static.Serve("/", static.LocalFile("./frontend/public/", true)))
 	router.NoRoute(func(c *gin.Context) { c.File("./frontend/public/index.html") })
 
-	//dbUtils.Migrate()
+	dbUtils.Migrate()
 	// APIのハンドルを定義
 	//TODO API handler Grouping
-	router.POST("/signup", signUp)
+	//TODO ハンドラの設定を別ファイルに切り出す
+	router.POST("/signup", controllers.AddNewUser)
 	// router.POST("/signin", signIn)
 	router.GET("todo/:uid/", controllers.GetOwnTasks)
 	router.POST("todo/:uid/", controllers.AddNewTask)
